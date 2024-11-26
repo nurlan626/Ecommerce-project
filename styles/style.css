@@ -1,0 +1,28 @@
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.gradient {
+  background-image: radial-gradient(rgb(100, 100, 100), rgb(0, 0, 0) 70%);
+}
+
+.bg-ps5 {
+  background-image: url(/images/ps5-slim-goedkope-playstation_large\ 1\ \(2\).png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 600px;
+  display: flex;
+  align-items: end;
+}
+
+.height-100 {
+  height: 280px;
+}
+
+.bg-speakers {
+  background-image: url(/images/69-694768_amazon-echo-png-clipart-transparent-amazon-echo-png\ 1.png);
+  background-repeat: no-repeat;
+  background-size: 70%;
+  background-position: center;
+}/*# sourceMappingURL=style.css.map */
