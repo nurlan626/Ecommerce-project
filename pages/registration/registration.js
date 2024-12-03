@@ -1,50 +1,72 @@
+import { restApiUrl } from "../../js/api.js";
+
 (() => {
   'use strict'
 
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  // Получаем все формы, к которым нужно применить пользовательскую валидацию Bootstrap
   const forms = document.querySelectorAll('.needs-validation')
 
-  // Loop over them and prevent submission
+  // Применяем обработчик события ко всем формам
   Array.from(forms).forEach(form => {
     form.addEventListener('submit', event => {
-      // Получение значений из полей формы
+      // Получаем значения из полей формы
       const name = document.querySelector(".name").value;
       const surname = document.querySelector(".surname").value;
       const email = document.querySelector(".email").value;
       const username = document.querySelector(".username").value;
       const password = document.querySelector(".password").value;
 
+      // Если форма не прошла валидацию, предотвращаем отправку
       if (!form.checkValidity()) {
         event.preventDefault();
         event.stopPropagation();
       } else {
-        event.preventDefault(); // Остановка стандартной отправки формы
+        // Если форма валидна, предотвращаем стандартную отправку формы
+        event.preventDefault(); // Останавливаем обычную отправку формы
         event.stopPropagation();
 
-        // const newUser = {
-        //   name,
-        //   surname,
-        //   email,
-        //   username,
-        //   password
-        // };
+        // Создаем объект нового пользователя
         const newUser = {        
-          username,
-          password,
-          email,
+          name,        // Добавляем имя
+          surname,     // Добавляем фамилию
+          username,    // Добавляем имя пользователя
+          password,    // Добавляем пароль
+          email,       // Добавляем email
         };
 
-        axios.post("http://localhost:8080/api/auth/register", newUser)
+        // Отправляем POST-запрос на сервер с данными нового пользователя
+        console.log("POST " + restApiUrl + "/auth/register");
+        
+        axios.post(restApiUrl + "/auth/register", newUser)
           .then((response) => {
+            // Предполагается, что сервер возвращает объект с полем message
             console.log(response.data);
-            alert("Успешная регистрация: " + response.data);
+            if (response.data.message) {
+              alert("Успешная регистрация: " + response.data.message);
+            } else {
+              alert("Регистрация прошла успешно!");
+            }
+            // Перенаправление на страницу входа
+            window.location.href = "/pages/logIn/login.html"; 
           })
           .catch((error) => {
-            console.log(error);
-            alert("Ошибка при регистрации: " + error.message);
+            console.error(error);
+
+            // Обработка ошибки в случае неправильных данных
+            if (error.response) {
+              // Если ошибка от сервера, то берем текст из response.data
+              alert("Ошибка при регистрации: " + error.response.data);
+            } else if (error.request) {
+              // Ошибка, если запрос не был отправлен
+              alert("Ошибка запроса: Нет ответа от сервера.");
+            } else {
+              // Другая ошибка (например, ошибка в настройках axios)
+              alert("Неизвестная ошибка: " + error.message);
+            }
           });
       }
 
+      // Применяем классы Bootstrap для валидации после отправки формы
       form.classList.add('was-validated');
     }, false);
   });
