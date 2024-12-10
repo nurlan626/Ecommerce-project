@@ -16,15 +16,10 @@ import restApiUrl from "../../js/api.js";
         form = document.querySelector(".form")
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-
-
         console.log(data)
-        alert("Order placed");
-        setTimeout(() => {
-          window.location.href = "/index.html";
-        }, 3000)
-      }
+        clearCart();
 
+      }
       form.classList.add('was-validated')
     }, false)
   })
@@ -62,4 +57,23 @@ function showData(data) {
   document.querySelector(".subtotal").innerHTML = `${total}$`;
   document.querySelector(".total").innerHTML = `${total}$`;
 
+}
+
+
+function clearCart() {
+  const token = localStorage.getItem('token');
+
+
+  axios.delete(restApiUrl + "/cart/clear", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  })
+    .then((response) => {
+     
+      setTimeout(() => {
+        window.location.href = "/index.html";
+      }, 3000)
+    })
+    .catch((error) => handleError(error));
 }
