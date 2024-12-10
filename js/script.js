@@ -1,14 +1,16 @@
+import restApiUrl from "../../js/api.js";
+
 // Функция для получения профиля пользователя
 function fetchUserProfile() {
     const token = localStorage.getItem('token'); // Получаем токен из localStorage
     if (token) {
         axios
-            .get('http://localhost:8080/api/auth/profile', {
+            .get(`${restApiUrl}/auth/profile`, {
                 headers: { Authorization: `Bearer ${token}` }, // Добавляем заголовок авторизации
             })
             .then(response => {
-                console.log('User Profile:', response.data); // Обрабатываем успешный ответ
                 showInProfileMenu(response.data);
+                localStorage.setItem("user", JSON.stringify(response.data))
             })
             .catch(error => {
                 if (error.response) {
@@ -22,6 +24,7 @@ function fetchUserProfile() {
         showOutOfProfileMenu(); // Показать меню для незарегистрированного пользователя
     }
 }
+fetchUserProfile();
 
 // Функция для выхода из аккаунта
 function logoutUser() {
@@ -46,6 +49,7 @@ function logoutUser() {
 
 // Функция для отображения меню профиля
 function showInProfileMenu(data) {
+    console.log(data)
     const profileMenu = document.querySelector(".profileMenu");
     profileMenu.innerHTML = `
         <a href="/pages/cart/cart.html">
@@ -75,5 +79,3 @@ function showOutOfProfileMenu() {
     `;
 }
 
-// Вызов функции для получения профиля при загрузке страницы
-fetchUserProfile();

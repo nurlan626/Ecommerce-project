@@ -1,5 +1,5 @@
 // Импортируем базовый URL API из модуля
-import { restApiUrl } from "../../js/api.js";
+import restApiUrl from "../../js/api.js";
 
 (() => {
   'use strict'; // Включаем строгий режим для повышения безопасности и предотвращения ошибок

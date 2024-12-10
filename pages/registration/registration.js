@@ -1,4 +1,4 @@
-import { restApiUrl } from "../../js/api.js";
+import  restApiUrl  from "../../js/api.js";
 
 (() => {
   'use strict'
